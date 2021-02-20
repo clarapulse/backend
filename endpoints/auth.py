@@ -2,6 +2,8 @@ from flask_restful import Resource
 from flask import session
 import requests
 import os
+
+
 class Auth(Resource):
     def get(self):
         if os.getenv('FLASK_ENV') == 'development':

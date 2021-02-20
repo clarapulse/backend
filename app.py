@@ -7,8 +7,11 @@ from flask_socketio import SocketIO
 from flask_restful import Api, Resource
 from flask_session import Session
 from datetime import timedelta
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 app.config.update({
     'SECRET_KEY': os.getenv('FLASK_SECRET_KEY'),
@@ -25,12 +28,12 @@ api = Api(app)
 socketio = SocketIO(app, manage_session=False)
 
 
-(_, _, filenames)  = next(os.walk('routes'))
+(_, _, filenames)  = next(os.walk('endpoints'))
 
 for file in filenames:
     if file.endswith('.py') and file != '__init__.py':
         moduleName = os.path.splitext(file)[0].lower()
-        module = importlib.import_module(f'routes.{moduleName}')
+        module = importlib.import_module(f'endpoints.{moduleName}')
         for name, obj in inspect.getmembers(module):
             if inspect.isclass(obj) and issubclass(obj, Resource) and name != 'Resource':            
                 api.add_resource(obj, f'/{name.lower()}')

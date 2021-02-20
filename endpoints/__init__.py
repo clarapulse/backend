@@ -2,6 +2,8 @@
 Protect routes with firebase.
 """
 
+
+
 from firebase_admin import credentials, auth, initialize_app
 import json
 from flask import request
