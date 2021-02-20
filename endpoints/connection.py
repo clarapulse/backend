@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import session, jsonify
+from flask import session, jsonify, request
 import requests
 import os
 from endpoints import require_login
@@ -14,8 +14,18 @@ class Connections(Resource):
         dbRes = User.get(User.user_id == user_id)
         if len(dbRes) == 0:
             return jsonify({"result": []})
-        return jsonify({"result": dbRes})
+        return jsonify({"result": [x for x in dbRes]})
 
     @require_login
+    @CDB.connection_context()
     def post(self):
-        pass
+        user_id = session.get("user_id")
+        another_assholes_id = request.form.get("who")
+        try:
+            Connection.create(
+                user_id_one=user_id,
+                user_id_two=another_assholes_id
+            )
+        except IntegrityError as e:
+            return jsonify({"success": False})
+        return jsonify({"success": True})
