@@ -8,18 +8,9 @@ from endpoints import require_login
 
 class Auth(Resource):
     def get(self):
-        if os.getenv('FLASK_ENV') == 'development':
-            session['registered'] = True
-            session['user_id'] = 1
-            return {'success': 'You have successfully authenticated!'}
-        else:
-            login = requests.get(
-                'https://backend.allthenticate.net/externallogin?email=eddie@allthenticate.net&website=Allthentibank&prompted=true')
-            if login.status_code == 200 and login.json()['firstName'] == 'Eddie':
-                session['registered'] = True
-                return {'success': 'You have successfully authenticated!'}
-            else:
-                return login.json()
+        user_id = session.get("user_id")
+        # not authenticake
+        # user info bbbb
 
     @require_login
     @CDB.connection_context()
