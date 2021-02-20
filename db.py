@@ -15,6 +15,9 @@ class User(BaseModel):
     name = CharField()
     email = CharField()
     url = TextField()
+    is_highschool = BooleanField()
+    highschool = CharField(null=True)
+    university = CharField(null=True)
 
 
 class Connection(BaseModel):
@@ -26,6 +29,12 @@ class Connection(BaseModel):
         indexes = (
             (('user_id_one', 'user_id_two'), True),
         )
+
+
+class Intention(BaseModel):
+    intention_id = IntegerField(primary_key=True)
+    user_id = CharField()
+    univ_name = CharField()
 
 
 @CDB.connection_context()
