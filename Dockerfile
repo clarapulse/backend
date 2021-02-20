@@ -6,10 +6,11 @@ RUN apk add python3-dev
 WORKDIR /home/src
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-EXPOSE 80
+EXPOSE 8000
 
 
 # do this properly later
 ENV FLASK_SECRET_KEY 'a716fd99-2db6-4b58-bd2b-388217f20dac' 
+ENV FLASK_DEBUG 'development'
 COPY . .
-CMD ["gunicorn", "app:app", "--workers", "20", "--timeout", "120", "-b", "0.0.0.0:80"]
+CMD ["python3", "app.py"]
