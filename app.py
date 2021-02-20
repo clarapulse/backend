@@ -25,8 +25,6 @@ Session(app)
 
 api = Api(app)
 
-socketio = SocketIO(app, manage_session=False)
-
 
 (_, _, filenames)  = next(os.walk('endpoints'))
 
@@ -41,4 +39,4 @@ for file in filenames:
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    app.run(host='0.0.0.0', debug=True, port=8000)
