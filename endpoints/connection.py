@@ -1,30 +1,21 @@
 from flask_restful import Resource
-from flask import session
+from flask import session, jsonify
 import requests
 import os
+from endpoints import require_login
+from db import *
 
 
 class Connections(Resource):
+    @require_login
+    @CDB.connection_context()
     def get(self):
-        if os.getenv('FLASK_ENV') == 'development':
-            session['registered'] = True
-            return {'success': 'You have successfully authenticated!'}
-        else:
-            login =  requests.get('https://backend.allthenticate.net/externallogin?email=eddie@allthenticate.net&website=Allthentibank&prompted=true')
-            if login.status_code == 200 and login.json()['firstName'] == 'Eddie':
-                session['registered'] = True
-                return {'success': 'You have successfully authenticated!'}
-            else:
-                return login.json()
+        user_id = session.get("user_id")
+        dbRes = User.get(User.user_id == user_id)
+        if len(dbRes) == 0:
+            return jsonify({"result": []})
+        return jsonify({"result": dbRes})
 
+    @require_login
     def post(self):
-        if os.getenv('FLASK_ENV') == 'development':
-            session['registered'] = True
-            return {'success': 'You have successfully authenticated!'}
-        else:
-            login =  requests.get('https://backend.allthenticate.net/externallogin?email=eddie@allthenticate.net&website=Allthentibank&prompted=true')
-            if login.status_code == 200 and login.json()['firstName'] == 'Eddie':
-                session['registered'] = True
-                return {'success': 'You have successfully authenticated!'}
-            else:
-                return login.json()
+        pass
