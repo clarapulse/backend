@@ -1,8 +1,8 @@
 from playhouse.cockroachdb import CockroachDatabase
 from peewee import *
 
-CDB = CockroachDatabase('my_app', user='root', host='10.1.0.8')
-# CDB = SqliteDatabase("b.db")
+# CDB = CockroachDatabase('my_app', user='root', host='10.1.0.8')
+CDB = SqliteDatabase("b.db")
 
 
 class BaseModel(Model):
@@ -12,6 +12,9 @@ class BaseModel(Model):
 
 class User(BaseModel):
     user_id = CharField(primary_key=True)
+    name = CharField()
+    email = CharField()
+    url = TextField()
 
 
 class Connection(BaseModel):
