@@ -1,10 +1,5 @@
 CREATE TABLE [users] (
-  [user_id] string PRIMARY KEY,
-  [email] string,
-  [given_name] string,
-  [family_name] string,
-  [picture_url] string,
-  [profile_message] string
+  [user_id] string PRIMARY KEY
 )
 GO
 
