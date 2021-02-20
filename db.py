@@ -18,3 +18,9 @@ class Connection(BaseModel):
     user_id_one = CharField()
     user_id_two = CharField()
 
+    class Meta:
+        indexes = (
+            (('user_id_one', 'user_id_two'), True),
+        )
+
+
