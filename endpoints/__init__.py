@@ -10,7 +10,7 @@ from flask import request
 import functools
 
 #Connect to firebase
-cred = credentials.Certificate('firebase_creds.json')
+cred = credentials.Certificate('../firebase_creds.json')
 firebase = initialize_app(cred)
 
 
