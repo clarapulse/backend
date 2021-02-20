@@ -2,6 +2,7 @@ from playhouse.cockroachdb import CockroachDatabase
 from peewee import *
 
 CDB = CockroachDatabase('my_app', user='root', host='10.1.0.8')
+# CDB = SqliteDatabase("b.db")
 
 
 class BaseModel(Model):
@@ -24,3 +25,9 @@ class Connection(BaseModel):
         )
 
 
+@CDB.connection_context()
+def initialize():
+    CDB.create_tables([User, Connection])
+
+
+initialize()

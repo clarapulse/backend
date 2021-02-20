@@ -7,14 +7,14 @@ from db import *
 
 
 class Connections(Resource):
-    @require_login
+    # @require_login
     @CDB.connection_context()
     def get(self):
         user_id = session.get("user_id")
-        dbRes = User.get(User.user_id == user_id)
+        dbRes = Connection.select().where(Connection.user_id_one == user_id)
         if len(dbRes) == 0:
             return jsonify({"result": []})
-        return jsonify({"result": [x for x in dbRes]})
+        return jsonify({"result": [{"u1": x.user_id_one, "u2": x.user_id_two} for x in dbRes]})
 
     @require_login
     @CDB.connection_context()
