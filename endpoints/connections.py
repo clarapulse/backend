@@ -2,9 +2,41 @@ from flask_restful import Resource
 from flask import session, request
 import requests
 import os
-from endpoints import require_login
+from endpoints import FCM_TOKENS, require_login
 from playhouse.shortcuts import model_to_dict
 from db import *
+from pyfcm import FCMNotification
+from endpoints import FCM_KEY, FCM_TOKENS
+
+
+@CDB.connection_context()
+def get_connections(user_id):
+    dbRes = Connection.select().where(
+        Connection.user_id_one == user_id or Connection.user_id_two == user_id
+    )
+    if len(dbRes) == 0:
+        return []
+
+    return [x.user_id_two for x in dbRes]
+
+
+def send_fcm(data_message, title=None):
+    push_service = FCMNotification(api_key=FCM_KEY)
+    try:
+        if type(FCM_TOKENS) is list:
+            print(FCM_TOKENS, data_message)
+            result = push_service.notify_multiple_devices(
+                registration_ids=FCM_TOKENS, message_body=data_message
+            )
+            print(result, "++++++++++++++", flush=True)
+        else:
+            print(FCM_TOKENS, "single device", data_message)
+            result = push_service.notify_single_device(
+                registration_id=FCM_TOKENS, message_body=data_message
+            )
+            print(result, flush=True)
+    except Exception as e:
+        print(e, flush=True)
 
 
 class Connections(Resource):
@@ -12,19 +44,11 @@ class Connections(Resource):
     @CDB.connection_context()
     def get(self):
         user_id = session.get("user").get("uid")
-        dbRes = Connection.select().where(
-            Connection.user_id_one == user_id or Connection.user_id_two == user_id
-        )
-        if len(dbRes) == 0:
-            return []
-
-        other_people = [x.user_id_two for x in dbRes]
-
+        other_people = get_connections(user_id)
         res = []
         for other_person in other_people:
             other = User.select().where(User.user_id == other_person).get()
             res.append(model_to_dict(other))
-        print(res)
         return res
 
     @require_login
@@ -38,6 +62,8 @@ class Connections(Resource):
         except IntegrityError as e:
             print(e)
             return {"success": False}, 500
+
+        send_fcm("connect request")
         return {"success": True}
 
 
@@ -50,11 +76,14 @@ class PotentialConnections(Resource):
         user_id = session.get("user").get("uid")
 
         REQUESTED_AMT = 4
+        ignored = get_connections(user_id) + [user_id]
+        res = []
 
-        people = [
-            model_to_dict(p)
-            for p in User.select().order_by(fn.Random()).limit(REQUESTED_AMT + 1)
-        ]
+        people = [model_to_dict(p) for p in User.select().order_by(fn.Random())]
 
-        people = filter(lambda p: p.get("user_id") != user_id, people)
-        return people[:4]
+        for person in people:
+            if person["user_id"] not in ignored:
+                res.append(person)
+            if len(res) == REQUESTED_AMT:
+                return res
+        return res

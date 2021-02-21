@@ -15,7 +15,7 @@ class User(BaseModel):
     name = CharField()
     email = CharField()
     url = TextField()
-    is_highschool = BooleanField()
+    is_highschool = BooleanField(null=True)
     major = CharField(null=True)
     highschool = CharField(null=True)
     university = CharField(null=True)

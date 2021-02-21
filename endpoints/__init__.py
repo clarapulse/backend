@@ -10,9 +10,13 @@ import functools
 from flask import session
 
 CONFIG = {"debug": False}
+FCM_TOKENS = [
+    "fCSgnX5QQAmigtLe6c9gLo:APA91bFEdoWtgfBKMJB27VS3qjVbaCOUUxRajLDxRZonwEK2j0XuBK3nM1AR73CMhP8ESvn3F6p9p2-cgZd2OS7HZoVZjUzNsgw5g5hOwuC5TxZvRv-_QxqZYDbXLvVdssXj_vWOxpOn"
+]
 # Connect to firebase
 cred = credentials.Certificate("firebase_creds.json")
 firebase = initialize_app(cred)
+FCM_KEY = "AAAA39F-IVM:APA91bFlK2JFoLOf9slR8VfMymf3ylRzaJAargobw6gWDpUMeSNoVraNfD1b1DfvUNCFnhhdqL4b79uVMt6UGCvvfPt0uKvo6psewpxW1S9diom1X9DXVz2OmJujEYJW400DWTMwxhB0"
 
 
 def require_login(func):

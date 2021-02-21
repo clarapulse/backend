@@ -4,11 +4,20 @@ import requests
 import os
 from db import *
 from endpoints import require_login
+from playhouse.shortcuts import model_to_dict
 
 
 class Lol(Resource):
     def get(self):
         return {"lol": 5}
+
+
+class Myself(Resource):
+    @require_login
+    @CDB.connection_context()
+    def get(self):
+        user_id = session.get("user").get("uid")
+        return model_to_dict(User.select().where(User.user_id == user_id).get())
 
 
 class AddUser(Resource):
