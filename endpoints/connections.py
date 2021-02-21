@@ -39,3 +39,22 @@ class Connections(Resource):
             print(e)
             return {"success": False}, 500
         return {"success": True}
+
+
+class PotentialConnections(Resource):
+    @require_login
+    @CDB.connection_context()
+    def get(self):
+        # get a <REQUESTED_AMD> random other people. guranteed not to include the requested user
+
+        user_id = session.get("user").get("uid")
+
+        REQUESTED_AMT = 4
+
+        people = [
+            model_to_dict(p)
+            for p in User.select().order_by(fn.Random()).limit(REQUESTED_AMT + 1)
+        ]
+
+        people = filter(lambda p: p.get("user_id") != user_id, people)
+        return people[:4]
