@@ -22,8 +22,6 @@ class AddUser(Resource):
                 name=user.get("name"),
                 email=user["firebase"]["identities"]["email"][0],
                 url=user.get("picture"),
-                is_highschool=True,
-                highschool="lmao",
             )
         except IntegrityError as e:
             print(e)
@@ -45,14 +43,16 @@ class University(Resource):
         intended_university_name = request.form.get(
             "intended_university_name"
         )  # seperated by comma
+        major = request.form.get("major")
         if not intended_university_name:
-            return {"success": False}
+            return {"success": False}, 400
         for i in intended_university_name.split(","):
             Intention.create(user_id=user_id, intended_university_name=i)
         User.update(
             is_highschool=university_name is None,
             highschool=hs_name,
             university=university_name,
+            major=major,
         ).where(User.user_id == user_id).execute()
         return {"success": True}
 

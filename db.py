@@ -16,17 +16,17 @@ class User(BaseModel):
     email = CharField()
     url = TextField()
     is_highschool = BooleanField()
+    major = CharField(null=True)
     highschool = CharField(null=True)
     university = CharField(null=True)
 
 
 class Connection(BaseModel):
-    connection_id = IntegerField(primary_key=True)
     user_id_one = CharField()
     user_id_two = CharField()
 
     class Meta:
-        indexes = ((("user_id_one", "user_id_two"), True),)
+        primary_key = CompositeKey("user_id_one", "user_id_two")
 
 
 class Intention(BaseModel):
