@@ -53,10 +53,9 @@ class University(Resource):
             "intended_university_name"
         )  # seperated by comma
         major = request.form.get("major")
-        if not intended_university_name:
-            return {"success": False}, 400
-        for i in intended_university_name.split(","):
-            Intention.create(user_id=user_id, intended_university_name=i)
+        if intended_university_name:
+            for i in intended_university_name.split(","):
+                Intention.create(user_id=user_id, intended_university_name=i)
         User.update(
             is_highschool=university_name is None,
             highschool=hs_name,

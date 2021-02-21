@@ -56,9 +56,9 @@ class Connections(Resource):
     def post(self):
         user_id = session.get("user").get("uid")
 
-        another_assholes_id = request.form.get("who")
+        other = request.form.get("who")
         try:
-            Connection.create(user_id_one=user_id, user_id_two=another_assholes_id)
+            Connection.create(user_id_one=user_id, user_id_two=other)
         except IntegrityError as e:
             print(e)
             return {"success": False}, 500
@@ -79,7 +79,8 @@ class PotentialConnections(Resource):
         ignored = get_connections(user_id) + [user_id]
         res = []
 
-        people = [model_to_dict(p) for p in User.select().order_by(fn.Random())]
+        scott = [{"user_id": "gStfLeZMqYaBArkkVXoCdwlVYJQ2"}]  # scott comes first
+        people = scott + [model_to_dict(p) for p in User.select().order_by(fn.Random())]
 
         for person in people:
             if person["user_id"] not in ignored:

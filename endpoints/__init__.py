@@ -11,7 +11,7 @@ from flask import session
 
 CONFIG = {"debug": False}
 FCM_TOKENS = [
-    "fCSgnX5QQAmigtLe6c9gLo:APA91bFEdoWtgfBKMJB27VS3qjVbaCOUUxRajLDxRZonwEK2j0XuBK3nM1AR73CMhP8ESvn3F6p9p2-cgZd2OS7HZoVZjUzNsgw5g5hOwuC5TxZvRv-_QxqZYDbXLvVdssXj_vWOxpOn"
+    "ejgxVEm_RXyw70BS4Mk07H:APA91bHGFP4MZs2psHsB0dlEZhqlCjdyKQVoBRraOGjlT--OXrW716aMxAwa60yEp0r1ngkQW8N8isZNffF7j4h2yrOP8Df2GFlj1zCN7PTAgf0L3vs9XEH_G5NyiV5StHUv_e5P3W1v"
 ]
 # Connect to firebase
 cred = credentials.Certificate("firebase_creds.json")
