@@ -42,7 +42,7 @@ class University(Resource):
         if not intended_university_name:
             return {"success": False}
         for i in intended_university_name.split(","):
-            Intention.create(user_id=user_id, intended_university_name=i)
+            Intention.create(user_id=user_id, univ_name=i)
         User.update(
             is_highschool=university_name is None,
             highschool=hs_name,
