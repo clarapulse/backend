@@ -1,7 +1,7 @@
 from playhouse.cockroachdb import CockroachDatabase
 from peewee import *
 
-CDB = CockroachDatabase("fucker", user="root", host="35.222.46.226")
+CDB = CockroachDatabase("clara", user="root", host="35.222.46.226")
 # CDB = SqliteDatabase("b.db")
 
 
