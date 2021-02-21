@@ -12,7 +12,6 @@ WORKDIR $APP_HOME
 
 # do this properly later
 ENV FLASK_SECRET_KEY 'a716fd99-2db6-4b58-bd2b-388217f20dac' 
-ENV FLASK_DEBUG 'development'
 
 COPY requirements.txt ./requirements.txt
 

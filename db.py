@@ -1,7 +1,7 @@
 from playhouse.cockroachdb import CockroachDatabase
 from peewee import *
 
-CDB = CockroachDatabase('fucker', user='root', host='35.222.46.226')
+CDB = CockroachDatabase("fucker", user="root", host="35.222.46.226")
 # CDB = SqliteDatabase("b.db")
 
 
@@ -26,9 +26,7 @@ class Connection(BaseModel):
     user_id_two = CharField()
 
     class Meta:
-        indexes = (
-            (('user_id_one', 'user_id_two'), True),
-        )
+        indexes = ((("user_id_one", "user_id_two"), True),)
 
 
 class Intention(BaseModel):
