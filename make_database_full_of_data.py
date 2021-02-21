@@ -252,7 +252,7 @@ x = []
 intent = 1
 dataUser=  []
 dataIntent = []
-for i in range(200):
+for i in range(2):
     fake = Faker()
     _x = uuid.uuid4()
     x.append(_x)
@@ -281,7 +281,7 @@ print("done 1/2")
 conn = 1
 connData = []
 done = ""
-for i in range(800):
+for i in range(0):
     try:
         conn += 1
         w1=random.choice(x)

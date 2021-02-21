@@ -1,9 +1,11 @@
+import time
 import endpoints
 import os
 import importlib, inspect
 
+
 # flask
-from flask import Flask
+from flask import Flask, session, request, g
 from flask_restful import Api, Resource
 from flask_session import Session
 from datetime import timedelta
@@ -53,6 +55,38 @@ for file in filenames:
                 api.add_resource(obj, f"/{name.lower()}")
 
 
+@app.before_request
+def setup_request():
+    g.start = time.time()  # get start time of request
+    session.modified = (
+        True  # in case session modification was a mutable item (list or dict)
+    )
+
+
+@app.after_request
+def log_request(response):
+    duration = round(time.time() - g.start, 2)  # get time taken for request
+    if session.get("loggedin"):
+        user_info = session.get("user")
+        user = f"From {user_info.get('email')}:\n"
+    else:
+        user = "From unauthenticated user:\n"
+    request_args = f"\n Params: {dict(request.args)}"
+    log_params = [
+        ("user_info", user, "purple"),
+        ("method", request.method, "blue"),
+        ("path", request.path, "blue"),
+        ("status", response.status, "green"),
+        ("duration", duration, "yellow"),
+        ("params", request_args, "black"),
+    ]
+    parts = ["Processed Request:\n"]
+    for name, value, color in log_params:
+        parts.append(str(value))
+    print(" ".join(parts))
+    return response
+
+
 port = int(os.environ.get("PORT", 8000))
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", threaded=True, port=port)
+    app.run(host="0.0.0.0", threaded=True, port=port, use_reloader=False)

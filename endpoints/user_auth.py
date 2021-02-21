@@ -11,25 +11,31 @@ class Lol(Resource):
         return {"lol": 5}
 
 
-class Auth(Resource):
+class AddUser(Resource):
     @require_login
     @CDB.connection_context()
-    def put(self):
-        user_id = session.get("user").get("uid")
-        name = request.form.get("name")
-        email = request.form.get("email")
-        url = request.form.get("url")
+    def post(self):
+        user = session.get("user")
         try:
-            User.create(user_id=user_id, name=name, email=email, url=url)
+            User.create(
+                user_id=user.get("uid"),
+                name=user.get("name"),
+                email=user["firebase"]["identities"]["email"][0],
+                url=user.get("picture"),
+                is_highschool=True,
+                highschool="lmao",
+            )
         except IntegrityError as e:
-            return {"success": False}
+            print(e)
+            return {"success": False}, 500
+
         return {"success": True}
 
 
 class University(Resource):
     @require_login
     @CDB.connection_context()
-    def put(self):
+    def post(self):
         # set whether they are highschool student or univ student
         user_id = session.get("user").get("uid")
         university_name = request.form.get(
@@ -42,7 +48,7 @@ class University(Resource):
         if not intended_university_name:
             return {"success": False}
         for i in intended_university_name.split(","):
-            Intention.create(user_id=user_id, univ_name=i)
+            Intention.create(user_id=user_id, intended_university_name=i)
         User.update(
             is_highschool=university_name is None,
             highschool=hs_name,
