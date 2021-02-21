@@ -79,8 +79,15 @@ class PotentialConnections(Resource):
         ignored = get_connections(user_id) + [user_id]
         res = []
 
-        scott = [{"user_id": "gStfLeZMqYaBArkkVXoCdwlVYJQ2"}]  # scott comes first
-        people = scott + [model_to_dict(p) for p in User.select().order_by(fn.Random())]
+        scott = {
+            "user_id": "gStfLeZMqYaBArkkVXoCdwlVYJQ2",
+            "url": "https://images-ext-2.discordapp.net/external/PaHiVmDDYd6rvA0mNkMksQTYe5vxm3spid5U6o4A31A/https/lh6.googleusercontent.com/-bbMB4noEp8g/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckoz6PP1B1RZiz5WRlf3Dnd2OE-PQ/s96-c/photo.jpg",
+            "name": "Scott Chow",
+            "is_highschool": False,
+            "university": "Harvard University",
+        }  # scott comes second
+        people = [model_to_dict(p) for p in User.select().order_by(fn.Random())]
+        people.insert(1, scott)
 
         for person in people:
             if person["user_id"] not in ignored:
