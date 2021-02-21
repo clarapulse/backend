@@ -1,8 +1,8 @@
 from playhouse.cockroachdb import CockroachDatabase
 from peewee import *
 
-# CDB = CockroachDatabase('my_app', user='root', host='10.1.0.8')
-CDB = SqliteDatabase("b.db")
+CDB = CockroachDatabase('fucker', user='root', host='35.222.46.226')
+# CDB = SqliteDatabase("b.db")
 
 
 class BaseModel(Model):
@@ -39,7 +39,7 @@ class Intention(BaseModel):
 
 @CDB.connection_context()
 def initialize():
-    CDB.create_tables([User, Connection])
+    CDB.create_tables([User, Connection, Intention])
 
 
 initialize()
