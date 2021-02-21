@@ -84,7 +84,7 @@ class PotentialConnections(Resource):
             "url": "https://images-ext-2.discordapp.net/external/PaHiVmDDYd6rvA0mNkMksQTYe5vxm3spid5U6o4A31A/https/lh6.googleusercontent.com/-bbMB4noEp8g/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckoz6PP1B1RZiz5WRlf3Dnd2OE-PQ/s96-c/photo.jpg",
             "name": "Scott Chow",
             "is_highschool": False,
-            "university": "Harvard University",
+            "university": "Las Positas Community College",
         }  # scott comes second
         people = [model_to_dict(p) for p in User.select().order_by(fn.Random())]
         people.insert(1, scott)
