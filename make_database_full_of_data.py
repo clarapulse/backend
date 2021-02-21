@@ -246,13 +246,13 @@ univ = ["Academy of Art College",
 "Trevecca Nazarene University",
 "Tri-College University"]
 # create dumb ass users
-CDB.drop_tables([User, Intention, Connection])
-CDB.create_tables([User, Intention, Connection])
+# CDB.drop_tables([User, Intention, Connection])
+# CDB.create_tables([User, Intention, Connection])
 x = []
 intent = 1
 dataUser=  []
 dataIntent = []
-for i in range(6):
+for i in range(6, 12):
     fake = Faker()
     _x = uuid.uuid4()
     x.append(_x)
