@@ -2,7 +2,8 @@ FROM python:3.8.2-alpine3.11
 RUN apk add build-base
 RUN apk add libffi-dev
 RUN apk add python3-dev
-
+RUN apk add --no-cache postgresql-libs && \
+ apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
 
