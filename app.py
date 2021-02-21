@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument(
     "--debug", default=False, action="store_true", help="Skip authentication"
 )
-args = parser.parse_args()
+args, unknown = parser.parse_known_args()
 endpoints.CONFIG["debug"] = args.debug
 
 
