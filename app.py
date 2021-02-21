@@ -3,7 +3,6 @@ import os
 import importlib, sys, inspect
 # flask
 from flask import Flask
-from flask_socketio import SocketIO
 from flask_restful import Api, Resource
 from flask_session import Session
 from datetime import timedelta
